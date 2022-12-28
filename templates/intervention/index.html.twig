@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Intervention index{% endblock %}
+
+{% block body %}
+    <h1>Intervention index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Genre</th>
+                <th>Contenu</th>
+                <th>Crée le</th>
+                <th>Completé le</th>
+                <th>Cas particulier</th>
+                <th>Document</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for intervention in interventions %}
+            <tr>
+                <td>{{ intervention.id }}</td>
+                <td>{{ intervention.title }}</td>
+                <td>{{ intervention.kind }}</td>
+                <td>{{ intervention.content }}</td>
+                <td>{{ intervention.createdAt ? intervention.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ intervention.completedAt ? intervention.completedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ intervention.specialCase }}</td>
+                <td>{{ intervention.document }}</td>
+                <td>
+                    <a href="{{ path('app_intervention_show', {'id': intervention.id}) }}">voir</a>
+                    <a href="{{ path('app_intervention_edit', {'id': intervention.id}) }}">éditer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Aucune intervention trouvée!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_intervention_new') }}">Crée une nouvelle intervention</a>
+{% endblock %}

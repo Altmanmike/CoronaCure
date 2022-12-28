@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil index{% endblock %}
+
+{% block body %}
+    <h1>Profil index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Statut</th>
+                <th>Compagnie</th>
+                <th>Adresse</th>
+                <th>Code postal</th>
+                <th>Ville</th>
+                <th>Téléphone</th>
+                <th>Mis à jour le</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for profile in profiles %}
+            <tr>
+                <td>{{ profile.id }}</td>
+                <td>{{ profile.statut }}</td>
+                <td>{{ profile.firm }}</td>
+                <td>{{ profile.address }}</td>
+                <td>{{ profile.zipcode }}</td>
+                <td>{{ profile.city }}</td>
+                <td>{{ profile.phone }}</td>
+                <td>{{ profile.updatedAt ? profile.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_profile_show', {'id': profile.id}) }}">voir</a>
+                    <a href="{{ path('app_profile_edit', {'id': profile.id}) }}">éditer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Aucun profil trouvé!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_profile_new') }}">Crée nouveau profil d'utilisateur"</a>
+{% endblock %}

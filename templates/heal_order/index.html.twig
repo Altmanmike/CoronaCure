@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HealOrder index{% endblock %}
+
+{% block body %}
+    <h1>HealOrder index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Genre</th>
+                <th>Code postal</th>
+                <th>Contenu</th>
+                <th>Crée le</th>
+                <th>Completé le</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for heal_order in heal_orders %}
+            <tr>
+                <td>{{ heal_order.id }}</td>
+                <td>{{ heal_order.kind }}</td>
+                <td>{{ heal_order.zipcode }}</td>
+                <td>{{ heal_order.content }}</td>
+                <td>{{ heal_order.createdAt ? heal_order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ heal_order.completedAt ? heal_order.completedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_heal_order_show', {'id': heal_order.id}) }}">voir</a>
+                    <a href="{{ path('app_heal_order_edit', {'id': heal_order.id}) }}">éditer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Aucune réservation trouvée!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_heal_order_new') }}">Crée une nouvelle réservation</a>
+{% endblock %}

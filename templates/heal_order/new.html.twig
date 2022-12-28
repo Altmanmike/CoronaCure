@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle réservation{% endblock %}
+
+{% block body %}
+    <h1>Crée une nouvelle réservation</h1>
+
+    {{ include('heal_order/_form.html.twig') }}
+
+    <a href="{{ path('app_heal_order_index') }}">retour à la liste</a>
+{% endblock %}

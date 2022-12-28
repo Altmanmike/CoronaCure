@@ -29,6 +29,10 @@ class Ticket
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $completed_at = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tickets')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category_id = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +94,18 @@ class Ticket
     public function setCompletedAt(?\DateTimeImmutable $completed_at): self
     {
         $this->completed_at = $completed_at;
+
+        return $this;
+    }
+
+    public function getCategoryId(): ?Category
+    {
+        return $this->category_id;
+    }
+
+    public function setCategoryId(?Category $category_id): self
+    {
+        $this->category_id = $category_id;
 
         return $this;
     }

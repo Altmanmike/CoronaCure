@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HealOrder édition{% endblock %}
+
+{% block body %}
+    <h1>HealOrder édition</h1>
+
+    {{ include('heal_order/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+    <a href="{{ path('app_heal_order_index') }}">retour à la liste</a>
+
+    {{ include('heal_order/_delete_form.html.twig') }}
+{% endblock %}

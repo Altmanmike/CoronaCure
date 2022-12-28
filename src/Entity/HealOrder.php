@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\HealOrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,6 +29,15 @@ class HealOrder
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $completed_at = null;
+
+    #[ORM\ManyToOne(inversedBy: 'healOrders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user_id = null;
+
+    public function __construct()
+    {        
+        $this->user_id = new ArrayCollection();        
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +100,18 @@ class HealOrder
     public function setCompletedAt(?\DateTimeImmutable $completed_at): self
     {
         $this->completed_at = $completed_at;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?User $user_id): self
+    {
+        $this->user_id = $user_id;
 
         return $this;
     }
