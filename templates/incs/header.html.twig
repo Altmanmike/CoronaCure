@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+    <div class="container-fluid">
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarColor01">
+            <a class="navbar-brand" href="#"><img class="header-logo" src="{{ asset('assets/img/coronacure_logo.png') }}" alt="logo coronacure"/></a>
+        </div>
+
+        <div class="collapse navbar-collapse justify-content-center" id="navbarColor02">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-house-medical-flag"></i> Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-hand-holding-medical"></i> Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-user-doctor"></i> Informations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fa-solid fa-virus-covid"></i> À propos</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarColor03">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_login') }}"><i class="fa-solid fa-right-to-bracket"></i> Connexion</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_register') }}"><i class="fa-solid fa-arrow-up-from-bracket"></i> S'enregistrer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+                </li>
+            </ul>        
+        </div>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+    </div>
+
+</nav>
+
