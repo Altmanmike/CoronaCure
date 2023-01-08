@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Ticket;
 use App\Form\TicketType;
 use App\Repository\TicketRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +23,14 @@ class TicketController extends AbstractController
     }
 
     #[Route('/new', name: 'app_ticket_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, TicketRepository $ticketRepository): Response
+    public function new(Request $request, TicketRepository $ticketRepository, UserRepository $userRepository): Response
     {
+		$u = $this->getUser()->getUserIdentifier();        
+        $user = $userRepository->findByEmail($u);     
+        if (in_array('ROLE_ADMIN', $user[0]->getRoles())) {
+            return $this->redirectToRoute('app_ticket_index');
+        }
+		
         $ticket = new Ticket();
         $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
@@ -49,8 +56,14 @@ class TicketController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_ticket_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Ticket $ticket, TicketRepository $ticketRepository): Response
+    public function edit(Request $request, Ticket $ticket, TicketRepository $ticketRepository, UserRepository $userRepository): Response
     {
+		$u = $this->getUser()->getUserIdentifier();        
+        $user = $userRepository->findByEmail($u);     
+        if (in_array('ROLE_ADMIN', $user[0]->getRoles())) {
+            return $this->redirectToRoute('app_ticket_index');
+        }
+		
         $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
 
@@ -67,8 +80,14 @@ class TicketController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_ticket_delete', methods: ['POST'])]
-    public function delete(Request $request, Ticket $ticket, TicketRepository $ticketRepository): Response
+    public function delete(Request $request, Ticket $ticket, TicketRepository $ticketRepository, UserRepository $userRepository): Response
     {
+		$u = $this->getUser()->getUserIdentifier();        
+        $user = $userRepository->findByEmail($u);     
+        if (in_array('ROLE_ADMIN', $user[0]->getRoles())) {
+            return $this->redirectToRoute('app_ticket_index');
+        }
+		
         if ($this->isCsrfTokenValid('delete'.$ticket->getId(), $request->request->get('_token'))) {
             $ticketRepository->remove($ticket, true);
         }

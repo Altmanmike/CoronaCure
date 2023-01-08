@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +23,14 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/new', name: 'app_category_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CategoryRepository $categoryRepository): Response
-    {
+    public function new(Request $request, CategoryRepository $categoryRepository, UserRepository $userRepository): Response
+    {		
+        $u = $this->getUser()->getUserIdentifier();        
+        $user = $userRepository->findByEmail($u);     
+        if (in_array('ROLE_USER', $user[0]->getRoles())) {
+            return $this->redirectToRoute('app_category_index');
+        }
+		
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
@@ -49,8 +56,14 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_category_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Category $category, CategoryRepository $categoryRepository): Response
+    public function edit(Request $request, Category $category, CategoryRepository $categoryRepository, UserRepository $userRepository): Response
     {
+		$u = $this->getUser()->getUserIdentifier();        
+        $user = $userRepository->findByEmail($u);     
+        if (in_array('ROLE_USER', $user[0]->getRoles())) {
+            return $this->redirectToRoute('app_category_index');
+        }
+		
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
@@ -67,8 +80,13 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_category_delete', methods: ['POST'])]
-    public function delete(Request $request, Category $category, CategoryRepository $categoryRepository): Response
+    public function delete(Request $request, Category $category, CategoryRepository $categoryRepository, UserRepository $userRepository): Response
     {
+		$u = $this->getUser()->getUserIdentifier();        
+        $user = $userRepository->findByEmail($u);     
+        if (in_array('ROLE_USER', $user[0]->getRoles())) {
+            return $this->redirectToRoute('app_category_index');
+        }
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
             $categoryRepository->remove($category, true);
         }
