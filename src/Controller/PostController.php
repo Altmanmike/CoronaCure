@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +23,14 @@ class PostController extends AbstractController
     }
 
     #[Route('/new', name: 'app_post_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PostRepository $postRepository): Response
+    public function new(Request $request, PostRepository $postRepository, UserRepository $userRepository): Response
     {
+		$u = $this->getUser()->getUserIdentifier();        
+        $user = $userRepository->findByEmail($u);     
+        if (in_array('ROLE_USER', $user[0]->getRoles())) {
+            return $this->redirectToRoute('app_post_index');
+        }
+		
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
@@ -49,8 +56,14 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_post_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Post $post, PostRepository $postRepository): Response
+    public function edit(Request $request, Post $post, PostRepository $postRepository, UserRepository $userRepository): Response
     {
+		$u = $this->getUser()->getUserIdentifier();        
+        $user = $userRepository->findByEmail($u);     
+        if (in_array('ROLE_USER', $user[0]->getRoles())) {
+            return $this->redirectToRoute('app_post_index');
+        }
+		
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
@@ -67,8 +80,14 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_post_delete', methods: ['POST'])]
-    public function delete(Request $request, Post $post, PostRepository $postRepository): Response
+    public function delete(Request $request, Post $post, PostRepository $postRepository, UserRepository $userRepository): Response
     {
+		$u = $this->getUser()->getUserIdentifier();        
+        $user = $userRepository->findByEmail($u);     
+        if (in_array('ROLE_USER', $user[0]->getRoles())) {
+            return $this->redirectToRoute('app_post_index');
+        }
+		
         if ($this->isCsrfTokenValid('delete'.$post->getId(), $request->request->get('_token'))) {
             $postRepository->remove($post, true);
         }
